@@ -1,5 +1,22 @@
-# Meteor Translation Addon
+# Meteor Translation Addon 
+# 流星翻译插件
+Warning: This project is under development and translations may not be complete
+警告: 此项目处于开发阶段 对内容的翻译可能不全
 
-This project is under development
-此项目正在开发
+The module MeteorClient is translated
+The language you translate depends on the language you choose for your game
+
+把流星端的模块名称翻译为你游戏的语言
+
+## How to use
+## 如何使用
+Click the Translation button on the Translation module configuration screen
+点击 Translation 模块中的 Translation按钮
+
+## Why is it useless?
+## 为啥没有用
+The module may not support your game language. Set the language to a supported language such as Chinese
+
+模块可能不支持你的游戏语言 将语言设置为支持的语言 比如中文
+
 
