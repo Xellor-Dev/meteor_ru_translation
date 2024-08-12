@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "id": "addon-template",
+  "id": "meteor-translation-addon",
   "version": "${version}",
-  "name": "Addon Template",
+  "name": "Meteor Translation Addon",
   "description": "An addon template for Meteor Client addons.",
   "authors": [
-    "seasnail"
+    "Nippaku Zanmu"
   ],
   "contact": {
     "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
@@ -14,18 +14,18 @@
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "com.example.addon.AddonTemplate"
+      "com.nippaku_zanmu.trans_addon.MeteorTranslation"
     ]
   },
   "mixins": [
-    "addon-template.mixins.json"
+    "addon-translation.mixins.json"
   ],
   "custom": {
-    "meteor-client:color": "225,25,25"
+    "meteor-client:color": "231,25,25"
   },
   "depends": {
-    "java": ">=21",
-    "minecraft": ["${mc_version}"],
+    "java": ">=17",
+    "minecraft": [">=1.21"],
     "meteor-client": "*"
   }
 }
