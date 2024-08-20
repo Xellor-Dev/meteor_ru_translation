@@ -2,7 +2,7 @@ package com.nippaku_zanmu.trans_addon.modules;
 
 
 import com.nippaku_zanmu.trans_addon.MeteorTranslation;
-import com.nippaku_zanmu.trans_addon.TransUtil;
+import com.nippaku_zanmu.trans_addon.util.TransUtil;
 import com.nippaku_zanmu.trans_addon.mixin.ModuleAccessor;
 import com.nippaku_zanmu.trans_addon.mixin.SettingAccessor;
 import com.nippaku_zanmu.trans_addon.mixin.SettingGroupAccessor;
@@ -14,12 +14,7 @@ import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.misc.swarm.Swarm;
-import meteordevelopment.meteorclient.systems.modules.misc.swarm.SwarmHost;
-import meteordevelopment.meteorclient.systems.modules.misc.swarm.SwarmWorker;
 import meteordevelopment.meteorclient.utils.Utils;
-import meteordevelopment.meteorclient.utils.render.color.Color;
-import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 
 public class Translation extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();

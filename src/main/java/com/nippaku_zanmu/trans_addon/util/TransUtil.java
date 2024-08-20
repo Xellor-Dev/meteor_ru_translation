@@ -1,5 +1,6 @@
-package com.nippaku_zanmu.trans_addon;
+package com.nippaku_zanmu.trans_addon.util;
 
+import com.nippaku_zanmu.trans_addon.MeteorTranslation;
 import com.nippaku_zanmu.trans_addon.modules.Translation;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;

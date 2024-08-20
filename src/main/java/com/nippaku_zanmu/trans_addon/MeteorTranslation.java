@@ -51,6 +51,6 @@ public class MeteorTranslation extends MeteorAddon {
 
     @Override
     public GithubRepo getRepo() {
-        return new GithubRepo("Nippaku_Zanmu", "meteor-addon-template");
+        return new GithubRepo("Nippaku-Zanmu", "meteor-translation-addon");
     }
 }
