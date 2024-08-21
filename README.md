@@ -4,8 +4,8 @@ Warning: This project is under development and translations may not be complete
 
 警告: 此项目处于开发阶段 对内容的翻译可能不全
 
-目前真正进行简体中文的翻译工作
-如果你想为流星端进行翻译请点击 https://zh.crowdin.com/project/meteortransaddon/zh-CN
+目前正在进行简体中文的翻译工作
+如果你想为流星端的中文翻译做出自己的贡献请点击 https://zh.crowdin.com/project/meteortransaddon/zh-CN
 
 The module MeteorClient is translated
 The language you translate depends on the language you choose for your game
