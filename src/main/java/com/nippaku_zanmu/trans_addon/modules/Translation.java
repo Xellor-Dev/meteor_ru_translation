@@ -15,6 +15,7 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.Utils;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 
 public class Translation extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();
@@ -39,7 +40,11 @@ public WWidget getWidget(GuiTheme theme) {
     WHorizontalList b = list.add(theme.horizontalList()).expandX().widget();
 
     WButton start = b.add(theme.button("Translate")).expandX().widget();
-    start.action = this::tran;
+    start.action = ()->{
+        ChatUtils.warning("流星翻译插件是开源的项目且完全免费 作者不会以任何形式对此插件进行收费");
+        ChatUtils.warning("如果你购买了此插件 则说明你被骗了");
+        tran();
+    };
     return list;
     }
 

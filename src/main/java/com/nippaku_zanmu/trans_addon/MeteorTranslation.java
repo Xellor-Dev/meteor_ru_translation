@@ -32,7 +32,7 @@ public class MeteorTranslation extends MeteorAddon {
 
     @Override
     public void onInitialize() {
-        LOG.info("Initializing Meteor Addon Template");
+        LOG.info("Initializing MeteorTransaction");
 
         // Modules
         Modules.get().add(new Translation());
