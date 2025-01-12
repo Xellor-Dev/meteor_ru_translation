@@ -2,6 +2,8 @@ package com.nippaku_zanmu.trans_addon.util;
 
 import com.nippaku_zanmu.trans_addon.MeteorTranslation;
 import com.nippaku_zanmu.trans_addon.modules.Translation;
+import meteordevelopment.meteorclient.addons.AddonManager;
+import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -10,12 +12,16 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TransUtil {
     private static String trans(String s) {
         return Text.translatable(s).getString();
     }
-
+    public static Set<String> getAddonsName(){
+       return AddonManager.ADDONS.stream().map(addon->addon.name).map(TransUtil::baseFormat).collect(Collectors.toSet());
+    }
 
     public static String transModuleName(Module m) {
         Category c = m.category;

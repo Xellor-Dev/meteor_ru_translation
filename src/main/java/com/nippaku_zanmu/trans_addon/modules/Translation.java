@@ -2,6 +2,7 @@ package com.nippaku_zanmu.trans_addon.modules;
 
 
 import com.nippaku_zanmu.trans_addon.MeteorTranslation;
+import com.nippaku_zanmu.trans_addon.settings.StringSelectSetting;
 import com.nippaku_zanmu.trans_addon.util.TransUtil;
 import com.nippaku_zanmu.trans_addon.mixin.ModuleAccessor;
 import com.nippaku_zanmu.trans_addon.mixin.SettingAccessor;
@@ -16,6 +17,9 @@ import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import net.minecraft.text.Text;
+
+import java.util.Set;
 
 public class Translation extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();
@@ -23,29 +27,30 @@ public class Translation extends Module {
         .name("dump en_usJson")
         .defaultValue(false)
         .build());
-
+    public final Setting<Set<String>> translationModules = sgGeneral.add(new StringSelectSetting.Builder().validValues(TransUtil.getAddonsName())
+        .defaultValue(TransUtil.getAddonsName()).name("translation-modules").build());
 
     public Translation() {
         super(MeteorTranslation.CATEGORY, "meteor-trans", "An example module that highlights the center of the world.");
     }
 
-//    @Override
+    //    @Override
 //    public void onActivate() {
 //        tran();
 //    }
-@Override
-public WWidget getWidget(GuiTheme theme) {
-    WVerticalList list = theme.verticalList();
+    @Override
+    public WWidget getWidget(GuiTheme theme) {
+        WVerticalList list = theme.verticalList();
 
-    WHorizontalList b = list.add(theme.horizontalList()).expandX().widget();
+        WHorizontalList b = list.add(theme.horizontalList()).expandX().widget();
 
-    WButton start = b.add(theme.button("Translate")).expandX().widget();
-    start.action = ()->{
-        ChatUtils.warning("流星翻译插件是开源的项目且完全免费 作者不会以任何形式对此插件进行收费");
-        ChatUtils.warning("如果你购买了此插件 则说明你被骗了");
-        tran();
-    };
-    return list;
+        WButton start = b.add(theme.button("Translate")).expandX().widget();
+        start.action = () -> {
+            ChatUtils.warning("流星翻译插件是开源的项目且完全免费 作者不会以任何形式对此插件进行收费");
+            ChatUtils.warning("如果你购买了此插件 则说明你被骗了");
+            tran();
+        };
+        return list;
     }
 
     public void tran() {
@@ -61,11 +66,11 @@ public WWidget getWidget(GuiTheme theme) {
 
             for (SettingGroup group : module.settings.groups) {
                 for (Setting<?> setting : ((SettingGroupAccessor) group).getSettings()) {
-                    String tranSettName = TransUtil.transSettingName(module,group,setting);
-                    ((SettingAccessor)setting).setTitle(Utils.nameToTitle(tranSettName));
+                    String tranSettName = TransUtil.transSettingName(module, group, setting);
+                    ((SettingAccessor) setting).setTitle(Utils.nameToTitle(tranSettName));
 
-                    String tranSettDesc = TransUtil.transSettingDes(module,group,setting);
-                    ((SettingAccessor)setting).setDescription(Utils.nameToTitle(tranSettDesc));
+                    String tranSettDesc = TransUtil.transSettingDes(module, group, setting);
+                    ((SettingAccessor) setting).setDescription(Utils.nameToTitle(tranSettDesc));
                 }
             }
 
