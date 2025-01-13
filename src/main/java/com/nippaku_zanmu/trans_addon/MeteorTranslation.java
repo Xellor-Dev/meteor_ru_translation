@@ -19,17 +19,6 @@ import java.nio.charset.StandardCharsets;
 public class MeteorTranslation extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
     public static final Category CATEGORY = new Category("MeteorTranslation");
-    public static  BufferedWriter bw ;
-
-    static {
-        try {
-            bw = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream("D:\\hack\\Misc\\meteor-translation-addon\\test\\en_us.json",false), StandardCharsets.UTF_8));
-        } catch (FileNotFoundException ignored) {
-
-        }
-    }
-
     @Override
     public void onInitialize() {
         LOG.info("Initializing MeteorTransaction");

@@ -101,7 +101,7 @@ public class StringSelectSetting extends Setting<Set<String>> {
     @Override
     public NbtCompound save(NbtCompound tag) {
         NbtList valueTag = new NbtList();
-        for (String s : validValues) {
+        for (String s : get()) {
             valueTag.add(NbtString.of(s));
         }
         tag.put("value", valueTag);

@@ -19,19 +19,44 @@ import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import net.minecraft.text.Text;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 public class Translation extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();
+    public final Setting<Boolean> bSetAutoTranslation = sgGeneral.add(new BoolSetting.Builder()
+        .name("auto-translation")
+        .description("")
+        .defaultValue(false)
+        .build());
+    public final Setting<String> sSetDumpPath = sgGeneral.add(new StringSetting.Builder()
+        .name("DumpPath")
+        .defaultValue("D:\\hack\\Misc\\meteor-translation-addon\\test\\en_us.json")
+        .build());
     public final Setting<Boolean> bSetDumpFile = sgGeneral.add(new BoolSetting.Builder()
         .name("dump en_usJson")
         .defaultValue(false)
         .build());
     public final Setting<Set<String>> translationModules = sgGeneral.add(new StringSelectSetting.Builder().validValues(TransUtil.getAddonsName())
         .defaultValue(TransUtil.getAddonsName()).name("translation-modules").build());
+    public static BufferedWriter dumpBW;
 
     public Translation() {
         super(MeteorTranslation.CATEGORY, "meteor-trans", "An example module that highlights the center of the world.");
+    }
+
+    private boolean isTranslation = false;
+
+    @Override
+    public void onActivate() {
+        if (bSetAutoTranslation.get() && !isTranslation) {
+            isTranslation = true;
+            tran();
+        }
+
+        ChatUtils.warning("流星翻译插件是开源的项目且完全免费 作者不会以任何形式对此插件进行收费");
+        ChatUtils.warning("如果你购买了此插件 则说明你被骗了");
     }
 
     //    @Override
@@ -46,15 +71,45 @@ public class Translation extends Module {
 
         WButton start = b.add(theme.button("Translate")).expandX().widget();
         start.action = () -> {
-            ChatUtils.warning("流星翻译插件是开源的项目且完全免费 作者不会以任何形式对此插件进行收费");
-            ChatUtils.warning("如果你购买了此插件 则说明你被骗了");
-            tran();
+            if (this.isActive()) {
+                if (bSetDumpFile.get()) {
+                    try {
+                        File path = new File(sSetDumpPath.get());
+                        if (!path.exists() & !(path.createNewFile())) {
+                            ChatUtils.sendMsg(Text.of("DumpError Can't Create Dump File"));
+                            return;
+                        }
+                        dumpBW = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(path, false), StandardCharsets.UTF_8));
+                    } catch (IOException e) {
+                        ChatUtils.error(e.getMessage());
+                        return;
+                    }
+                }
+                isTranslation = true;
+                tran();
+
+                try {
+                    if (dumpBW != null)
+                        dumpBW.close();
+                } catch (IOException e) {
+
+                }
+
+            } else {
+                ChatUtils.warning("你首先要开启此模块");
+            }
         };
         return list;
     }
 
+
     public void tran() {
         for (Module module : Modules.get().getList()) {
+            String addonName = TransUtil.getAddonName(module);
+            if (!translationModules.get().contains(addonName)) continue;
+            //插件过滤
+
             String tranName = TransUtil.transModuleName(module);
             // 经过翻译的名称
             ((ModuleAccessor) module).setTitle(Utils.nameToTitle(tranName));

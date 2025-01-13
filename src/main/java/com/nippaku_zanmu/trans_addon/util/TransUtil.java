@@ -9,24 +9,34 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TransUtil {
+    private static final MinecraftClient mc = MinecraftClient.getInstance();
+
     private static String trans(String s) {
         return Text.translatable(s).getString();
     }
-    public static Set<String> getAddonsName(){
-       return AddonManager.ADDONS.stream().map(addon->addon.name).map(TransUtil::baseFormat).collect(Collectors.toSet());
+
+    public static Set<String> getAddonsName() {
+        return AddonManager.ADDONS.stream().map(addon -> addon.name).map(TransUtil::baseFormat).collect(Collectors.toSet());
+    }
+
+    public static String getAddonName(Module m) {
+        return TransUtil.baseFormat(m.addon == null ? "unknow_addon" : m.addon.name);
     }
 
     public static String transModuleName(Module m) {
-        Category c = m.category;
+        Category category = m.category;
         String moduleName = m.name;
-        String key = "meteor." + baseFormat(c.name) + "." + baseFormat(moduleName);
+        String key = "meteor." + getAddonName(m) + "." + baseFormat(category.name) + "." + baseFormat(moduleName);
         //转换成规范的key
         //meteor.模块类型.模块名
 
@@ -43,10 +53,10 @@ public class TransUtil {
     }
 
     public static String transModuleDescription(Module m) {
-        Category c = m.category;
+        Category category = m.category;
         String moduleName = m.name;
         String moduleDes = m.description;
-        String key = "meteor." + baseFormat(c.name) + "." + baseFormat(moduleName) + ".description";
+        String key = "meteor." + getAddonName(m) + "." + baseFormat(category.name) + "." + baseFormat(moduleName) + ".description";
         //转换成规范的key
         dumpEn_USJson(key, moduleDes);
 
@@ -59,10 +69,11 @@ public class TransUtil {
         return trans;
     }
 
-    public static String transSettingName(Module mod, SettingGroup group, Setting s) {
+    public static String transSettingName(Module module, SettingGroup group, Setting s) {
         String key = "meteor." +
-            baseFormat(mod.category.name) + "." +
-            baseFormat(mod.name) + "." +
+            getAddonName(module) + "." +
+            baseFormat(module.category.name) + "." +
+            baseFormat(module.name) + "." +
             "setting." +
             group.name + "." +
             s.name;
@@ -79,10 +90,11 @@ public class TransUtil {
         return trans;
     }
 
-    public static String transSettingDes(Module mod, SettingGroup group, Setting s) {
+    public static String transSettingDes(Module module, SettingGroup group, Setting s) {
         String key = "meteor." +
-            baseFormat(mod.category.name) + "." +
-            baseFormat(mod.name) + "." +
+            getAddonName(module) + "." +
+            baseFormat(module.category.name) + "." +
+            baseFormat(module.name) + "." +
             "setting." +
             group.name + "." +
             s.name + "." +
@@ -106,19 +118,23 @@ public class TransUtil {
         s = s.toLowerCase();
         s = s.replace(" ", "_");
         s = s.replace("-", "_");
+        s = s.replace(".", "_");
         return s;
     }
 
     public static void dumpEn_USJson(String key, String en_usName) {
-        if (!Modules.get().get(Translation.class).bSetDumpFile.get()) return;
+        Translation translation = Modules.get().get(Translation.class);
 
+        if ((!translation.bSetDumpFile.get()) || translation.bSetAutoTranslation.get() || mc.world == null || mc.player == null)
+            return;
         try {
+
             en_usName = en_usName.replace("\"", "\\\"");
-            MeteorTranslation.bw.write("\"" + key + "\"" + ":" + "\"" + en_usName + "\"" + ",");
-            MeteorTranslation.bw.newLine();
-            MeteorTranslation.bw.flush();
+            Translation.dumpBW.write("\"" + key + "\"" + ":" + "\"" + en_usName + "\"" + ",");
+            Translation.dumpBW.newLine();
+            Translation.dumpBW.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ChatUtils.error(e.getMessage());
         }
     }
 
