@@ -26,24 +26,26 @@ import java.util.Set;
 public class Translation extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();
     public final Setting<Boolean> bSetAutoTranslation = sgGeneral.add(new BoolSetting.Builder()
-        .name("auto-translation")
+        .name("自动翻译")
         .description("")
         .defaultValue(false)
         .build());
     public final Setting<String> sSetDumpPath = sgGeneral.add(new StringSetting.Builder()
         .name("DumpPath")
         .defaultValue("D:\\hack\\Misc\\meteor-translation-addon\\test\\en_us.json")
+        .visible(() -> false)
         .build());
     public final Setting<Boolean> bSetDumpFile = sgGeneral.add(new BoolSetting.Builder()
         .name("dump en_usJson")
         .defaultValue(false)
+        .visible(() -> false)
         .build());
     public final Setting<Set<String>> translationModules = sgGeneral.add(new StringSelectSetting.Builder().validValues(TransUtil.getAddonsName())
-        .defaultValue(TransUtil.getAddonsName()).name("translation-modules").build());
+        .defaultValue(TransUtil.getAddonsName()).name("翻译的模块").build());
     public static BufferedWriter dumpBW;
 
     public Translation() {
-        super(MeteorTranslation.CATEGORY, "meteor-trans", "An example module that highlights the center of the world.");
+        super(MeteorTranslation.CATEGORY, "中文翻译", "为 meteor客户端 提供中文支持");
     }
 
     private boolean isTranslation = false;
@@ -55,8 +57,7 @@ public class Translation extends Module {
             tran();
         }
 
-        ChatUtils.warning("流星翻译插件是开源的项目且完全免费 作者不会以任何形式对此插件进行收费");
-        ChatUtils.warning("如果你购买了此插件 则说明你被骗了");
+        ChatUtils.warning("已开启中文翻译-此插件完全开源免费");
     }
 
     //    @Override
@@ -69,7 +70,7 @@ public class Translation extends Module {
 
         WHorizontalList b = list.add(theme.horizontalList()).expandX().widget();
 
-        WButton start = b.add(theme.button("Translate")).expandX().widget();
+        WButton start = b.add(theme.button("开始翻译")).expandX().widget();
         start.action = () -> {
             if (this.isActive()) {
                 if (bSetDumpFile.get()) {

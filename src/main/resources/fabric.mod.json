@@ -1,14 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "meteor-translation-addon",
+  "id": "meteor-chinese",
   "version": "${version}",
-  "name": "Meteor Translation Addon",
-  "description": "An addon template for Meteor Client addons.",
+  "name": "meteor-chinese",
+  "description": "为 meteor客户端 提供中文支持",
   "authors": [
-    "Nippaku Zanmu"
+    "Nippaku Zanmu",
+    "xingke"
   ],
   "contact": {
-    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
+    "repo": "https://github.com/xingke0/meteor_chinese"
   },
   "icon": "assets/template/icon.png",
   "environment": "client",
