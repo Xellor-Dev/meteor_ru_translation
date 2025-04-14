@@ -113,9 +113,9 @@ public class StringSelectSetting extends Setting<Set<String>> {
     public Set<String> load(NbtCompound tag) {
         get().clear();
 
-        NbtList valueTag = tag.getList("value", 8);
+        NbtList valueTag = tag.getListOrEmpty("value");
         for (NbtElement tagI : valueTag) {
-            String s = tagI.asString();
+            String s = tagI.asString().orElse("");
             if ((filter == null || filter.test(s))&& validValues.contains(s))get().add(s);
 //            EntityType<?> type = Registries.ENTITY_TYPE.get(Identifier.of(tagI.asString()));
 //            if (filter == null || filter.test(type)) get().add(type);

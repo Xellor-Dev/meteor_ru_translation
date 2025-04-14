@@ -106,7 +106,7 @@ public class Translation extends Module {
 
 
     public void tran() {
-        for (Module module : Modules.get().getList()) {
+        for (Module module : Modules.get().getAll()) {
             String addonName = TransUtil.getAddonName(module);
             if (!translationModules.get().contains(addonName)) continue;
             //插件过滤

@@ -4,11 +4,11 @@
  */
 package com.nippaku_zanmu.trans_addon.font_fix;
 
-import com.nippaku_zanmu.trans_addon.mixin.ByteTextureAccessor;
+import com.mojang.blaze3d.textures.FilterMode;
+import com.mojang.blaze3d.textures.TextureFormat;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import meteordevelopment.meteorclient.renderer.Mesh;
-import meteordevelopment.meteorclient.renderer.text.Font;
-import meteordevelopment.meteorclient.utils.render.ByteTexture;
+import meteordevelopment.meteorclient.renderer.MeshBuilder;
+import meteordevelopment.meteorclient.renderer.Texture;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.*;
@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FontFix  {
-    public ByteTexture texture;
+public class FontFix {
+    public Texture texture;
     private final int height;
     private final float scale;
     private final float ascent;
@@ -34,12 +34,12 @@ public class FontFix  {
     private final STBTTPackContext packContext;
     private final Int2ObjectOpenHashMap<STBTTPackedchar> packedChars = new Int2ObjectOpenHashMap<>();
 
-    private  long loadTimer = 0;
-    private int loadCount=0;
+    private long loadTimer = 0;
+    private int loadCount = 0;
     private final int loadSpeedLimit = 7;
     //The number of string that can be loaded per 100ms
 
-    public FontFix(ByteBuffer buffer, int height)  {
+    public FontFix(ByteBuffer buffer, int height) {
 
 
         this.buffer = buffer;
@@ -57,7 +57,8 @@ public class FontFix  {
         STBTruetype.stbtt_PackBegin(packContext, bitmap, size, size, 0, 1);
 
         // Create texture object and get font scale
-        texture = new ByteTexture(size, size, bitmap, ByteTexture.Format.A, ByteTexture.Filter.Linear, ByteTexture.Filter.Linear);
+        texture = new Texture(size, size, TextureFormat.RED8, FilterMode.LINEAR, FilterMode.LINEAR);
+        texture.upload(bitmap);
         scale = STBTruetype.stbtt_ScaleForPixelHeight(fontInfo, height);
 
         // Get font vertical ascent
@@ -93,11 +94,11 @@ public class FontFix  {
     }
 
     private void loadCharacter(List<Integer> codePoints) {
-        if (System.currentTimeMillis()-loadTimer>100){
+        if (System.currentTimeMillis() - loadTimer > 100) {
             loadTimer = System.currentTimeMillis();
-            loadCount =0;
+            loadCount = 0;
         }
-        if (loadCount>=loadSpeedLimit)return;
+        if (loadCount >= loadSpeedLimit) return;
         //Limit the load speed to avoid blocking the rendering thread
         for (Integer codePoint : codePoints) {
             loadCharacter(codePoint);
@@ -142,7 +143,8 @@ public class FontFix  {
     }
 
     private void createTexture() {
-        texture = new ByteTexture(size, size, bitmap, ByteTexture.Format.A, ByteTexture.Filter.Linear, ByteTexture.Filter.Linear);
+        texture = new Texture(size, size, TextureFormat.RED8, FilterMode.LINEAR, FilterMode.LINEAR);
+        texture.upload(bitmap);
         //((ByteTextureAccessor)texture).upload(size, size, bitmap, ByteTexture.Format.A, ByteTexture.Filter.Linear, ByteTexture.Filter.Linear);
     }
 
@@ -165,16 +167,17 @@ public class FontFix  {
     public int getHeight() {
         return height;
     }
-    private boolean tryLoadString(String s){
+
+    private boolean tryLoadString(String s) {
         boolean isLoading = false;
         List<Integer> charPoints = null;
         for (int i = 0; i < s.length(); i++) {
             int cp = s.charAt(i);
             CharData c = charMap.get(cp);
-            if (c==null){
+            if (c == null) {
                 if (charPoints == null) charPoints = new ArrayList<>();
                 charPoints.add(cp);
-                isLoading  = true;
+                isLoading = true;
             }
         }
         if (charPoints != null) {
@@ -184,8 +187,8 @@ public class FontFix  {
     }
 
 
-    public double render(Mesh mesh, String string, double x, double y, Color color, double scale) {
-        if (tryLoadString(string))return x;
+    public double render(MeshBuilder mesh, String string, double x, double y, Color color, double scale) {
+        if (tryLoadString(string)) return x;
 
         y += ascent * this.scale * scale;
         for (int i = 0; i < string.length(); i++) {
