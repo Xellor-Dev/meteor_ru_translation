@@ -2,9 +2,6 @@
   "required": true,
   "package": "com.nippaku_zanmu.trans_addon.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": [
-    "ExampleMixin"
-  ],
   "injectors": {
     "defaultRequire": 1
   },
