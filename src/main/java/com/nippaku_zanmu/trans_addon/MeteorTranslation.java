@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class MeteorTranslation extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
-    public static final Category CATEGORY = new Category("中文翻译支持");
+    public static final Category CATEGORY = new Category("Chinese Support");
     @Override
     public void onInitialize() {
         LOG.info("Initializing MeteorTransaction");
