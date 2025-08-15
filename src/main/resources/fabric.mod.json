@@ -1,15 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "meteor-chinese",
+  "id": "meteor-ru",
   "version": "${version}",
-  "name": "meteor-chinese",
-  "description": "为 meteor客户端 提供中文支持",
+  "name": "meteor-ru",
+  "description": "Meteor Russian Translation",
   "authors": [
     "Nippaku Zanmu",
-    "xingke"
+    "xingke",
+    "Fork by Xellor"
   ],
   "contact": {
-    "repo": "https://github.com/xingke0/meteor_chinese"
+    "repo": ""
   },
   "icon": "assets/template/icon.png",
   "environment": "client",
